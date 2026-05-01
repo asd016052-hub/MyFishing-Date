@@ -1,11 +1,206 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><title>釣魚日誌最終版</title><link rel="manifest" href="manifest.json"/><link rel="stylesheet" href="style.css"/><meta name="theme-color" content="#0f766e"/></head><body><header><h1>釣魚日誌</h1><p>離線可用・可新增裝備版</p></header><main>
-<section class="card"><h2>月份漁獲分析</h2><select id="monthSelect"><option value="">選擇月份</option><option value="01">1月</option><option value="02">2月</option><option value="03">3月</option><option value="04">4月</option><option value="05">5月</option><option value="06">6月</option><option value="07">7月</option><option value="08">8月</option><option value="09">9月</option><option value="10">10月</option><option value="11">11月</option><option value="12">12月</option></select><div id="monthResult"></div><canvas id="monthChart" width="320" height="180"></canvas></section>
-<section class="card"><h2>魚種查詢</h2><input id="fishSearchInput" placeholder="輸入魚種，例如：紅沙、臭肚"><button type="button" id="fishSearchBtn">查詢魚種</button><div id="fishSearchResult"></div></section>
-<section class="card"><h2>資料備份</h2><button type="button" id="exportBtn">📤 匯出備份</button><button type="button" id="importBtn">📥 匯入還原</button><input type="file" id="importFile" accept=".json" style="display:none;"></section>
-<section class="card"><h2>釣魚紀錄</h2><label>區域<select id="area"></select></label><label>縣市 / 島嶼<select id="city"></select></label><label>釣點<select id="spot"></select></label><label>日期<input id="date" type="date"></label><label>潮汐<select id="tide"><option>未填</option><option>滿潮</option><option>漲潮</option><option>退潮</option><option>乾潮</option><option>轉流</option></select></label>
-<details class="preset"><summary>釣組套用</summary><label>選擇釣組<select id="presetSelect"><option value="">選擇釣組</option></select></label><div class="row2"><button type="button" id="applyPresetBtn">套用</button><button type="button" id="savePresetBtn">儲存目前配置</button></div><div class="row2"><button type="button" id="updatePresetBtn">修改此釣組</button><button type="button" id="deletePresetBtn">刪除此釣組</button></div><input id="presetName" placeholder="新釣組名稱，例如：南堤紅沙"></details>
-<label>魚種<input id="fish" placeholder="例如：紅沙、臭肚、藍鰭鰺"></label><div class="grid3"><label>數量<input id="count" type="number" min="1" value="1"></label><label>重量<input id="weight" inputmode="decimal" placeholder="例如：2"></label><label>單位<select id="unit"><option>台斤</option><option>公斤</option><option>公克</option><option>兩</option></select></label></div>
-<div class="quick-note"><p>快速紀錄</p><div id="quickBtns"></div><div class="row2"><input id="newNote" placeholder="自訂關鍵字"><button type="button" id="addNoteBtn">加入</button></div></div>
-<label>備註<textarea id="note" rows="4" placeholder="流水、魚訊、釣棚、現場狀況..."></textarea></label>
-<details class="gear"><summary>釣具資訊（選填）</summary><label>釣竿<select id="rod"></select></label><div class="row2"><input id="newRod" placeholder="新增釣竿"><button type="button" id="addRodBtn">加入釣竿</button></div><label>捲線器<select id="reel"></select></label><div class="row2"><input id="newReel" placeholder="新增捲線器"><button type="button" id="addReelBtn">加入捲線器</button></div><label>浮標<select id="float"><option>未填</option><option>長標</option><option>短標</option><option>阿波</option><option>目印</option><option>無</option></select></label><label>母線<select id="mainLine"><option>未填</option><option>PE</option><option>尼龍</option></select></label><label>子線<select id="leader"><option>未填</option><option>1.0</option><option>1.5</option><option>1.75</option><option>2.0</option><option>3.0</option><option>4.0</option><option>5.0</option><option>6.0</option><option>7.0</option><option>8.0</option><option>9.0</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>25</option><option>30</option><option>40</option><option>50</option></select></label><label>魚鉤<select id="hook"><option>未填</option><optgroup label="鉤型"><option>千又</option><option>小磯</option><option>秋田狐</option><option>伊勢尼</option><option>丸世</option><option>鐵板鈎</option></optgroup><optgroup label="號數"><option>0.8</option><option>1.0</option><option>2.0</option><option>3.0</option><option>4.0</option><option>5.0</option><option>6.0</option><option>7.0</option><option>8.0</option><option>9.0</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>25</option><option>30</option><option>35</option></optgroup></select></label><label>餌料<select id="bait"><option>未填</option><option>南極蝦</option><option>練餌</option><option>青蟲</option><option>赤蟲</option><option>沙蟲</option><option>白蝦肉</option><option>大白蝦</option><option>白蝦丁</option><option>火燒蝦（狗蝦）</option><option>沙蝦</option><option>鬍鬚蝦</option><option>金寶螺</option><option>砢螅</option><option>蚵仔</option><option>藤壺</option><option>海膽</option><option>綠海草絲</option><option>紅草</option><option>小卷</option><option>章魚</option><option>白底仔</option><option>青蚶</option><option>紅腳仔</option><option>丁香魚</option><option>虱目魚</option><option>吳郭魚</option><option>土黃仔</option><option>肉鰛仔</option><option>豆仔</option><option>鰹魚肉</option></select></label></details><button id="saveBtn" class="primary" type="button">儲存</button><div id="saveStatus" class="save-status hidden"></div></section>
-<section class="card"><h2>此釣點紀錄</h2><div id="spotSummary"></div><div id="recordList"></div></section></main><script src="app.js"></script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("./sw.js").then(reg=>{reg.update();}).catch(()=>{});});}</script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>釣魚日誌 終極版</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f766e">
+</head>
+<body>
+<header>
+  <h1>釣魚日誌</h1>
+  <p>終極版・離線可用・可備份</p>
+</header>
+
+<main>
+  <section class="card">
+    <h2>月份漁獲分析</h2>
+    <select id="monthSelect"></select>
+    <div id="monthResult"></div>
+    <canvas id="monthChart" width="320" height="180"></canvas>
+  </section>
+
+  <section class="card">
+    <h2>魚種查詢</h2>
+    <input id="fishSearchInput" placeholder="輸入魚種，例如：紅沙、臭肚">
+    <button type="button" id="fishSearchBtn">查詢魚種</button>
+    <div id="fishSearchResult"></div>
+  </section>
+
+  <section class="card">
+    <h2>資料備份</h2>
+    <button type="button" id="exportBtn">📤 匯出備份</button>
+    <button type="button" id="importBtn">📥 匯入還原</button>
+    <input type="file" id="importFile" accept=".json" style="display:none;">
+  </section>
+
+  <section class="card">
+    <h2>釣魚紀錄</h2>
+
+    <label>區域<select id="area"></select></label>
+    <label>縣市 / 島嶼<select id="city"></select></label>
+    <label>釣點<select id="spot"></select></label>
+    <label>日期<input id="date" type="date"></label>
+    <label>潮汐
+      <select id="tide">
+        <option>未填</option>
+        <option>滿潮</option>
+        <option>漲潮</option>
+        <option>退潮</option>
+        <option>乾潮</option>
+        <option>轉流</option>
+      </select>
+    </label>
+
+    <details class="preset">
+      <summary>釣組套用</summary>
+      <label>選擇釣組<select id="presetSelect"></select></label>
+      <div class="row2">
+        <button type="button" id="applyPresetBtn">套用</button>
+        <button type="button" id="savePresetBtn">儲存目前配置</button>
+      </div>
+      <div class="row2">
+        <button type="button" id="updatePresetBtn">修改此釣組</button>
+        <button type="button" id="deletePresetBtn">刪除此釣組</button>
+      </div>
+      <input id="presetName" placeholder="新釣組名稱，例如：南堤紅沙">
+    </details>
+
+    <label>魚種<input id="fish" placeholder="例如：紅沙、臭肚、藍鰭鰺"></label>
+
+    <div class="grid3">
+      <label>數量<input id="count" type="number" min="1" value="1"></label>
+      <label>重量<input id="weight" inputmode="decimal" placeholder="例如：2"></label>
+      <label>單位
+        <select id="unit">
+          <option>台斤</option>
+          <option>公斤</option>
+          <option>公克</option>
+          <option>兩</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="quick-note">
+      <p>快速紀錄</p>
+      <div id="quickBtns"></div>
+      <div class="row2">
+        <input id="newNote" placeholder="自訂關鍵字">
+        <button type="button" id="addNoteBtn">加入</button>
+      </div>
+    </div>
+
+    <label>備註<textarea id="note" rows="4" placeholder="流水、魚訊、釣棚、現場狀況..."></textarea></label>
+
+    <details class="gear">
+      <summary>釣具資訊（選填）</summary>
+
+      <label>釣竿<select id="rod"></select></label>
+      <div class="row2">
+        <input id="newRod" placeholder="新增釣竿">
+        <button type="button" id="addRodBtn">加入釣竿</button>
+      </div>
+
+      <label>捲線器<select id="reel"></select></label>
+      <div class="row2">
+        <input id="newReel" placeholder="新增捲線器">
+        <button type="button" id="addReelBtn">加入捲線器</button>
+      </div>
+
+      <label>浮標
+        <select id="float">
+          <option>未填</option>
+          <option>長標</option>
+          <option>短標</option>
+          <option>阿波</option>
+          <option>目印</option>
+          <option>無</option>
+        </select>
+      </label>
+
+      <label>母線
+        <select id="mainLine">
+          <option>未填</option>
+          <option>PE</option>
+          <option>尼龍</option>
+        </select>
+      </label>
+
+      <label>子線<select id="leader"></select></label>
+
+      <label>魚鉤種類
+        <select id="hookType">
+          <option>未填</option>
+          <option>千又</option>
+          <option>小磯</option>
+          <option>秋田狐</option>
+          <option>伊勢尼</option>
+          <option>丸世</option>
+          <option>鐵板鈎</option>
+        </select>
+      </label>
+
+      <label>魚鉤號數<select id="hookSize"></select></label>
+
+      <label>餌料
+        <select id="bait">
+          <option>未填</option>
+          <option>南極蝦</option>
+          <option>練餌</option>
+          <option>青蟲</option>
+          <option>赤蟲</option>
+          <option>沙蟲</option>
+          <option>白蝦肉</option>
+          <option>大白蝦</option>
+          <option>白蝦丁</option>
+          <option>火燒蝦（狗蝦）</option>
+          <option>沙蝦</option>
+          <option>鬍鬚蝦</option>
+          <option>金寶螺</option>
+          <option>砢螅</option>
+          <option>蚵仔</option>
+          <option>藤壺</option>
+          <option>海膽</option>
+          <option>綠海草絲</option>
+          <option>紅草</option>
+          <option>小卷</option>
+          <option>章魚</option>
+          <option>白底仔</option>
+          <option>青蚶</option>
+          <option>紅腳仔</option>
+          <option>丁香魚</option>
+          <option>虱目魚</option>
+          <option>吳郭魚</option>
+          <option>土黃仔</option>
+          <option>肉鰛仔</option>
+          <option>豆仔</option>
+          <option>鰹魚肉</option>
+        </select>
+      </label>
+    </details>
+
+    <button id="saveBtn" class="primary" type="button">儲存</button>
+    <div id="saveStatus" class="save-status hidden"></div>
+  </section>
+
+  <section class="card">
+    <h2>此釣點紀錄</h2>
+    <div id="spotSummary"></div>
+    <div id="recordList"></div>
+  </section>
+</main>
+
+<script src="app.js?v=ultimate1"></script>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.register("./sw.js?v=ultimate1")
+      .then(reg=>reg.update())
+      .catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
