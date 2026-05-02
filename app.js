@@ -556,43 +556,7 @@ async function syncCloud(){
         "Content-Type": "application/json",
         "apikey": window.SUPABASE_ANON_KEY,
         "Authorization": "Bearer " + window.SUPABASE_ANON_KEY,
-        "Prefer": "resolution=merge-duplicates"
-      },
-      body: JSON.stringify([{
-        user_id: window.CLOUD_USER_ID || "main",
-        data: data
-      }])
-    });
-
-    if(!res.ok){
-      const text = await res.text();
-      alert("雲端同步失敗：" + text);
-    }
-  }catch(err){
-    alert("雲端同步失敗：" + err.message);
-  }
-}
-function initCloud(){
-  // 使用 fetch 版同步，這裡保留給 init() 呼叫，不做其他事
-}
-
-async function syncCloud(){
-  try{
-    const data = {
-      records: load(),
-      presets: getPresets(),
-      quickNotes,
-      rods: getList(rodKey, defaultRods),
-      reels: getList(reelKey, defaultReels)
-    };
-
-    const res = await fetch(window.SUPABASE_URL + "/rest/v1/fishing_app_data", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": window.SUPABASE_ANON_KEY,
-        "Authorization": "Bearer " + window.SUPABASE_ANON_KEY,
-        "Prefer": "resolution=merge-duplicates"
+     "Prefer": "resolution=merge-duplicates,return=representation"
       },
       body: JSON.stringify([{
         user_id: window.CLOUD_USER_ID || "main",
