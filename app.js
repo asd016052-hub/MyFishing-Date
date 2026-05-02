@@ -20,8 +20,11 @@ const defaultPresets = [
 
 window.addEventListener("load", init);
 
-function init(){
+async function init(){
   initCloud();
+
+  await loadCloud();
+  
   initMonths();
   initHookAndLeader();
   renderRod();
@@ -31,9 +34,42 @@ function init(){
   renderPresets();
   loadQuickNotes();
   bindEvents();
-  renderSpotRecords();
 }
+async function loadCloud(){
+  try{
+    const res = await fetch(
+      window.SUPABASE_URL + "/rest/v1/fishing_app_data?user_id=eq." + (window.CLOUD_USER_ID || "main"),
+      {
+        headers: {
+          "apikey": window.SUPABASE_ANON_KEY,
+          "Authorization": "Bearer " + window.SUPABASE_ANON_KEY
+        }
+      }
+    );
 
+    if(!res.ok) return;
+
+    const rows = await res.json();
+    if(!rows.length) return;
+
+    const cloud = rows[0].data;
+
+    if(cloud.records) localStorage.setItem(dataKey, JSON.stringify(cloud.records));
+    if(cloud.presets) localStorage.setItem(presetKey, JSON.stringify(cloud.presets));
+    if(cloud.quickNotes) localStorage.setItem(quickKey, JSON.stringify(cloud.quickNotes));
+    if(cloud.rods) localStorage.setItem(rodKey, JSON.stringify(cloud.rods));
+    if(cloud.reels) localStorage.setItem(reelKey, JSON.stringify(cloud.reels));
+
+    renderRod();
+    renderReel();
+    renderPresets();
+    loadQuickNotes();
+    renderSpotRecords();
+    monthSearch();
+  }catch(err){
+    console.log("雲端讀取失敗", err);
+  }
+}
 function bindEvents(){
   $("saveBtn").addEventListener("click", saveRecord);
   $("monthSelect").addEventListener("change", monthSearch);
