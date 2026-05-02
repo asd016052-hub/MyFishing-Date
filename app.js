@@ -21,6 +21,7 @@ const defaultPresets = [
 window.addEventListener("load", init);
 
 function init(){
+  initCloud();
   initMonths();
   initHookAndLeader();
   renderRod();
@@ -262,6 +263,7 @@ function saveRecord(){
   }
 
   saveAll(records);
+  syncCloud(); 
   if(navigator.vibrate) navigator.vibrate(50);
 
   const spotCount = records.filter(r => r.area === area && r.city === city && r.spot === spot).length;
